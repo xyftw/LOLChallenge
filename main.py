@@ -55,7 +55,7 @@ def main():
 						avaiSet = avaiSet & set(chalList[select]['idList'])
 			champList = sorted(list(champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 			champListZH = [ champDict[champ][0] for champ in champList ]
-			put_text(f"{','.join(champListZH)}", scope="display")
+			#put_text(f"{','.join(champListZH)}", scope="display")
 
 		
 		if selectList:
