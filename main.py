@@ -7,7 +7,7 @@ from functools import partial
 
 PORT = 8080
 
-config(title="LOL Team Challenge List")
+config(title="LOL Team Challenge Helper")
 #set_env(title="LOL Team Challenge List")
 def printJSON(data):
 	print(json.dumps(data, ensure_ascii=False, indent=4))
