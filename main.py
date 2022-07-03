@@ -8,7 +8,7 @@ from functools import partial
 
 PORT = 8080
 
-config(title="LOL Team Challenge Helper", theme="sketchy")
+config(theme="sketchy", title="LOL Team Challenge Helper", description="英雄聯盟挑戰系統陣容小幫手",)
 
 def printJSON(data):
 	print(json.dumps(data, ensure_ascii=False, indent=4))
@@ -44,7 +44,7 @@ def main():
 				curList += [f"{chalList[i]['name']}{'' if chalList[i]['all5'] else '³'}", put_buttons([dict(label='✔', value='select', color='light')], onclick=partial(onSelect, choice=i), scope='select')]
 			if i % COLNUM == COLNUM-1 or i==29: putList.append(curList)
 		clear('select')
-		put_table([['名稱', '動作']*COLNUM]+putList, scope='select')
+		put_table([['名稱', '選擇']*COLNUM]+putList, scope='select')
 		# 產生交集列表
 		if selectList:
 			champSet, avaiSet= -1, -1
@@ -124,5 +124,4 @@ if __name__ == '__main__':
 		# Since some cloud server may close idle connections (such as heroku),
 		# use `websocket_ping_interval` to  keep the connection alive
 		start_ws_server(main, port=args.port, websocket_ping_interval=30)
-	session.set_env(output_animation=False)
 	#start_server(main)
