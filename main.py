@@ -1,4 +1,4 @@
-from pywebio import start_server
+from pywebio import start_server, config
 from pywebio.input import input, FLOAT
 from pywebio.output import *
 
@@ -7,6 +7,8 @@ from functools import partial
 
 PORT = 8080
 
+config(title="LOL Team Challenge List")
+#set_env(title="LOL Team Challenge List")
 def printJSON(data):
 	print(json.dumps(data, ensure_ascii=False, indent=4))
 
@@ -35,20 +37,28 @@ def main():
 					champSet = champSet & set(chalList[select]['idList'])
 			champList = sorted(list(champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 			champListZH = [ champDict[champ][0] for champ in champList ]
-
-	#put_text("You click %s button ar row %s" % (action, choice), scope='display')
+		putList = []
+		for i in range(len(chalList)):
+			if i % 4 ==0: curList = []
+			if i in selectList:
+				curList += [chalList[i]['name'], put_buttons([dict(label='✔', value='remove', color='dark')], onclick=partial(onSelect, choice=i), scope='select')]
+			else:
+				curList += [chalList[i]['name'], put_buttons([dict(label='✔', value='select', color='light')], onclick=partial(onSelect, choice=i), scope='select')]
+			if i % 4 == 3 or i==29: putList.append(curList)
+		clear('select')
+		put_table([['名稱', '動作', '名稱', '動作', '名稱', '動作']]+putList, scope='select')
 		put_text(f"目前選擇：{'、'.join([chalList[i]['name'] for i in selectList])}", scope='display')
 		if selectList:
 			put_text(f"可用英雄({len(champListZH)})：{','.join(champListZH)}", scope='display')
 
 	putList = []
 	for i in range(len(chalList)):
-		if i % 3 ==0: curList = []
-		curList += [chalList[i]['name'], put_buttons([dict(label='✔', value='select', color='light'), dict(label='❌', value='remove', color='light')], onclick=partial(onSelect, choice=i))]
-		if i % 3 == 2: putList.append(curList)
+		if i % 4 ==0: curList = []
+		curList += [chalList[i]['name'], put_buttons([dict(label='✔', value='select', color='light')], onclick=partial(onSelect, choice=i))]
+		if i % 4 == 3 or i==29: putList.append(curList)
 	clear()
-
-	put_table([['名稱', '動作', '名稱', '動作', '名稱', '動作']]+putList)
+	put_scope('select')
+	put_table([['名稱', '動作', '名稱', '動作', '名稱', '動作']]+putList, scope='select')
 	put_scope('display')
 
 if __name__ == '__main__':
