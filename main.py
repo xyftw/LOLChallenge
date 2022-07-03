@@ -85,7 +85,7 @@ def main():
 						countDict[champId].append(chalList[select]['name'])
 						#put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
 					selectCnt += 1
-			availDict = {count: [] for count in range(len(selectList)-1, 1, -1)}
+			availDict = {count: [] for count in range(selectCnt-1, 1, -1)}
 			for champId in countDict:
 				if len(countDict[champId]) in availDict.keys():
 					availDict[len(countDict[champId])].append(champId)
