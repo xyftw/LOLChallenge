@@ -70,12 +70,13 @@ def output2CSV():
 			byEng = sorted(chal['availableIds'], key = lambda x: (champDict[x][1], x)) # 照英文排序
 			tmpListCH = [ champDict[champ][0] for champ in byEng ]
 			data.write(f"{chal['name']}\t{description}\t{len(byEng)}\t{','.join(tmpListCH)}\n")
-			jsonData.append({'name':chal['name'], 'description':description, 'idList':byEng, 'ZHList':tmpListCH, 'icon':chal['levelToIconPath']['CHALLENGER'].lower()})
+			jsonData.append({'name':chal['name'], 'description':description, 'idList':byEng, 'all5':(False if '3' in chal['description'] else True), 'icon':chal['levelToIconPath']['CHALLENGER'].lower()})
 		for role in roleDict:
+			description = "以 5 人組隊，使用 5 名同一職業（刺客、法師、射手、坦克、輔助或鬥士）的英雄贏得多場對戰"
 			byEng = sorted(roleDict[role], key = lambda x: (champDict[x][1], x)) # 照英文排序
 			tmpListCH = [ champDict[champ][0] for champ in byEng ]
 			data.write(f"{role}\t\t{len(byEng)}\t{','.join(tmpListCH)}\n")
-			jsonData.append({'name':f"{role}", 'description':description, 'idList':byEng, 'ZHList':tmpListCH, 'icon':"/lol-game-data/assets/ASSETS/Challenges/Config/303408/Tokens/CHALLENGER.png".lower()})
+			jsonData.append({'name':f"{role}", 'description':description, 'idList':byEng, 'all5':True, 'icon':"/lol-game-data/assets/ASSETS/Challenges/Config/303408/Tokens/CHALLENGER.png".lower()})
 	with open("data.json", "w", encoding='utf-8') as f:
 		json.dump(jsonData, f, indent=4, ensure_ascii=False)
 	

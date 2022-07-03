@@ -28,15 +28,7 @@ def main():
 		if action == "remove":
 			if choice in selectList:
 				selectList.remove(choice)
-		if selectList:
-			champSet= {}
-			for select in selectList:
-				if not champSet: 
-					champSet = set(chalList[select]['idList'])
-				else:
-					champSet = champSet & set(chalList[select]['idList'])
-			champList = sorted(list(champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
-			champListZH = [ champDict[champ][0] for champ in champList ]
+		# 產生新的選單，並顯示
 		putList = []
 		for i in range(len(chalList)):
 			if i % 4 ==0: curList = []
@@ -47,11 +39,42 @@ def main():
 			if i % 4 == 3 or i==29: putList.append(curList)
 		clear('select')
 		put_table([['名稱', '動作', '名稱', '動作', '名稱', '動作']]+putList, scope='select')
-		put_text(f"目前選擇：{'、'.join([chalList[i]['name'] for i in selectList])}", scope='display')
+		# 產生交集列表
 		if selectList:
-			put_text(f"可用英雄({len(champListZH)})：{','.join(champListZH)}", scope='display')
+			champSet, avaiSet= set(), set()
+			for select in selectList:
+				if not champSet: 
+					champSet = set(chalList[select]['idList'])
+				else:
+					champSet = champSet & set(chalList[select]['idList'])
+				if chalList[select]['all5']:
+					if not avaiSet:
+						avaiSet = set(chalList[select]['idList'])
+					else:
+						avaiSet = avaiSet & set(chalList[select]['idList'])
+			champList = sorted(list(champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
+			champListZH = [ champDict[champ][0] for champ in champList ]
+
+		
+		if selectList:
+			for select in selectList:
+				imageUrl = chalList[select]['icon'].replace("/lol-game-data/assets", "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default")
+				put_image(imageUrl, scope='display', width="10%")
+			put_markdown(f"## 目前選擇：{'、'.join([chalList[i]['name'] for i in selectList])}", scope='display')
+			put_markdown(f"### 完全符合的可用英雄({len(champListZH)})：`{','.join(champListZH)}`", scope='display')
 			for champId in champList:
 				put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
+		
+		if len(selectList) > 1:
+			for select in selectList:
+				if not chalList[select]['all5']:
+					tmpSet = avaiSet & set(chalList[select]['idList']) if avaiSet else set(chalList[select]['idList'])
+					tmpList = sorted(list(tmpSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
+					tmpListZH = [ champDict[champ][0] for champ in tmpList ]
+					put_markdown(f"### `{chalList[select]['name']}` 需要從以下{len(tmpListZH)}英雄中選擇至少3個英雄：`{','.join(tmpListZH)}`", scope='display')
+					for champId in tmpList:
+						put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
+
 
 	putList = []
 	for i in range(len(chalList)):
