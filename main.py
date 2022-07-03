@@ -66,12 +66,25 @@ def main():
 				put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
 		
 		if len(selectList) > 1:
+			countDict = {key: [] for key in champDict.keys()}
 			for select in selectList:
 				if not chalList[select]['all5']:
 					tmpSet = avaiSet & set(chalList[select]['idList']) if avaiSet else set(chalList[select]['idList'])
 					tmpList = sorted(list(tmpSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 					tmpListZH = [ champDict[champ][0] for champ in tmpList ]
 					put_markdown(f"### `{chalList[select]['name']}` 需要從以下{len(tmpListZH)}英雄中選擇至少3個英雄：`{','.join(tmpListZH)}`", scope='display')
+					for champId in tmpList:
+						countDict[champId].append(chalList[select]['name'])
+						#put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
+			availDict = {count: [] for count in range(len(selectList)-1, 1, -1)}
+			for champId in countDict:
+				if len(countDict[champId]) in availDict.keys():
+					availDict[len(countDict[champId])].append(champId)
+			for availCnt in availDict:
+				tmpList = sorted(list(availDict[availCnt]), key= lambda x: (champDict[x][1], x)) # 照英文排序
+				tmpListZH = [ champDict[champ][0] for champ in tmpList ]
+				if len(tmpList):
+					put_markdown(f"### 以下英雄符合所可選條件中的{availCnt}個條件，推薦使用：`{','.join(tmpListZH)}`", scope='display')
 					for champId in tmpList:
 						put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
 
