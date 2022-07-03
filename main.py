@@ -22,6 +22,7 @@ def main():
 	selectList = []
 	def onSelect(action, choice):
 		clear(scope='display')
+		# 點擊反應
 		if action == "select":
 			if choice not in selectList:
 				selectList.append(choice)
@@ -41,19 +42,20 @@ def main():
 		put_table([['名稱', '動作', '名稱', '動作', '名稱', '動作']]+putList, scope='select')
 		# 產生交集列表
 		if selectList:
-			champSet, avaiSet= set(), set()
+			champSet, avaiSet= -1, -1
 			for select in selectList:
-				if not champSet: 
+				if champSet == -1: 
 					champSet = set(chalList[select]['idList'])
 				else:
 					champSet = champSet & set(chalList[select]['idList'])
 				if chalList[select]['all5']:
-					if not avaiSet:
+					if avaiSet == -1: 
 						avaiSet = set(chalList[select]['idList'])
 					else:
 						avaiSet = avaiSet & set(chalList[select]['idList'])
 			champList = sorted(list(champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 			champListZH = [ champDict[champ][0] for champ in champList ]
+			put_text(f"{','.join(champListZH)}", scope="display")
 
 		
 		if selectList:
@@ -69,7 +71,7 @@ def main():
 			countDict = {key: [] for key in champDict.keys()}
 			for select in selectList:
 				if not chalList[select]['all5']:
-					tmpSet = avaiSet & set(chalList[select]['idList']) if avaiSet else set(chalList[select]['idList'])
+					tmpSet = avaiSet & set(chalList[select]['idList']) if avaiSet != -1 else set(chalList[select]['idList'])
 					tmpList = sorted(list(tmpSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 					tmpListZH = [ champDict[champ][0] for champ in tmpList ]
 					put_markdown(f"### `{chalList[select]['name']}` 需要從以下{len(tmpListZH)}英雄中選擇至少3個英雄：`{','.join(tmpListZH)}`", scope='display')
