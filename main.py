@@ -50,6 +50,8 @@ def main():
 		put_text(f"目前選擇：{'、'.join([chalList[i]['name'] for i in selectList])}", scope='display')
 		if selectList:
 			put_text(f"可用英雄({len(champListZH)})：{','.join(champListZH)}", scope='display')
+			for champId in champList:
+				put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
 
 	putList = []
 	for i in range(len(chalList)):
