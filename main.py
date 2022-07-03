@@ -34,9 +34,9 @@ def main():
 		for i in range(len(chalList)):
 			if i % 4 ==0: curList = []
 			if i in selectList:
-				curList += [chalList[i]['name'], put_buttons([dict(label='✔', value='remove', color='dark')], onclick=partial(onSelect, choice=i), scope='select')]
+				curList += [f"{chalList[i]['name']}{'' if chalList[i]['all5'] else '³'}", put_buttons([dict(label='✔', value='remove', color='dark')], onclick=partial(onSelect, choice=i), scope='select')]
 			else:
-				curList += [chalList[i]['name'], put_buttons([dict(label='✔', value='select', color='light')], onclick=partial(onSelect, choice=i), scope='select')]
+				curList += [f"{chalList[i]['name']}{'' if chalList[i]['all5'] else '³'}", put_buttons([dict(label='✔', value='select', color='light')], onclick=partial(onSelect, choice=i), scope='select')]
 			if i % 4 == 3 or i==29: putList.append(curList)
 		clear('select')
 		put_table([['名稱', '動作', '名稱', '動作', '名稱', '動作']]+putList, scope='select')
@@ -69,6 +69,7 @@ def main():
 		
 		if len(selectList) > 1:
 			countDict = {key: [] for key in champDict.keys()}
+			selectCnt = 0
 			for select in selectList:
 				if not chalList[select]['all5']:
 					tmpSet = avaiSet & set(chalList[select]['idList']) if avaiSet != -1 else set(chalList[select]['idList'])
@@ -78,6 +79,7 @@ def main():
 					for champId in tmpList:
 						countDict[champId].append(chalList[select]['name'])
 						#put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
+					selectCnt += 1
 			availDict = {count: [] for count in range(len(selectList)-1, 1, -1)}
 			for champId in countDict:
 				if len(countDict[champId]) in availDict.keys():
@@ -86,7 +88,7 @@ def main():
 				tmpList = sorted(list(availDict[availCnt]), key= lambda x: (champDict[x][1], x)) # 照英文排序
 				tmpListZH = [ champDict[champ][0] for champ in tmpList ]
 				if len(tmpList):
-					put_markdown(f"### 以下英雄符合所可選條件中的{availCnt}個條件，推薦使用：`{','.join(tmpListZH)}`", scope='display')
+					put_markdown(f"### 以下{len(tmpList)}個英雄符合{selectCnt}個可選條件中的{availCnt}個條件，推薦使用：`{','.join(tmpListZH)}`", scope='display')
 					for champId in tmpList:
 						put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
 
@@ -94,7 +96,7 @@ def main():
 	putList = []
 	for i in range(len(chalList)):
 		if i % 4 ==0: curList = []
-		curList += [chalList[i]['name'], put_buttons([dict(label='✔', value='select', color='light')], onclick=partial(onSelect, choice=i))]
+		curList += [f"{chalList[i]['name']}{'' if chalList[i]['all5'] else '³'}", put_buttons([dict(label='✔', value='select', color='light')], onclick=partial(onSelect, choice=i))]
 		if i % 4 == 3 or i==29: putList.append(curList)
 	clear()
 	put_scope('select')
