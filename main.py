@@ -1,5 +1,6 @@
-from pywebio import start_server, config
+from pywebio import start_server, config, session
 from pywebio.input import input, FLOAT
+from pywebio.output import *
 from pywebio.output import *
 
 import json
@@ -20,6 +21,10 @@ def main():
 	chalNameList = [chal['name'] for chal in chalList]
 
 	selectList = []
+
+	isMobile = session.info.user_agent.is_mobile
+	COLNUM = 2 if isMobile else 4
+
 	def onSelect(action, choice):
 		clear(scope='display')
 		# 點擊反應
@@ -32,14 +37,14 @@ def main():
 		# 產生新的選單，並顯示
 		putList = []
 		for i in range(len(chalList)):
-			if i % 4 ==0: curList = []
+			if i % COLNUM ==0: curList = []
 			if i in selectList:
 				curList += [f"{chalList[i]['name']}{'' if chalList[i]['all5'] else '³'}", put_buttons([dict(label='✔', value='remove', color='dark')], onclick=partial(onSelect, choice=i), scope='select')]
 			else:
 				curList += [f"{chalList[i]['name']}{'' if chalList[i]['all5'] else '³'}", put_buttons([dict(label='✔', value='select', color='light')], onclick=partial(onSelect, choice=i), scope='select')]
-			if i % 4 == 3 or i==29: putList.append(curList)
+			if i % COLNUM == COLNUM-1 or i==29: putList.append(curList)
 		clear('select')
-		put_table([['名稱', '動作', '名稱', '動作', '名稱', '動作']]+putList, scope='select')
+		put_table([['名稱', '動作']*COLNUM]+putList, scope='select')
 		# 產生交集列表
 		if selectList:
 			champSet, avaiSet= -1, -1
@@ -61,7 +66,7 @@ def main():
 		if selectList:
 			for select in selectList:
 				imageUrl = chalList[select]['icon'].replace("/lol-game-data/assets", "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default")
-				put_image(imageUrl, scope='display', width="10%")
+				put_image(imageUrl, scope='display', width= ("20%" if isMobile else "10%") )
 			put_markdown(f"## 目前選擇：{'、'.join([chalList[i]['name'] for i in selectList])}", scope='display')
 			put_markdown(f"### 完全符合的可用英雄({len(champListZH)})：`{','.join(champListZH)}`", scope='display')
 			for champId in champList:
@@ -95,12 +100,12 @@ def main():
 
 	putList = []
 	for i in range(len(chalList)):
-		if i % 4 ==0: curList = []
+		if i % COLNUM ==0: curList = []
 		curList += [f"{chalList[i]['name']}{'' if chalList[i]['all5'] else '³'}", put_buttons([dict(label='✔', value='select', color='light')], onclick=partial(onSelect, choice=i))]
-		if i % 4 == 3 or i==29: putList.append(curList)
+		if i % COLNUM == COLNUM-1 or i==29: putList.append(curList)
 	clear()
 	put_scope('select')
-	put_table([['名稱', '動作', '名稱', '動作', '名稱', '動作']]+putList, scope='select')
+	put_table([['名稱', '選擇']*COLNUM]+putList, scope='select')
 	put_scope('display')
 
 if __name__ == '__main__':
