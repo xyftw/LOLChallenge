@@ -695,7 +695,7 @@
         "icon": "/lol-game-data/assets/assets/challenges/config/303412/tokens/challenger.png"
     },
     {
-        "name": "mage",
+        "name": "法師",
         "description": "以 5 人組隊，使用 5 名同一職業（刺客、法師、射手、坦克、輔助或鬥士）的英雄贏得多場對戰",
         "idList": [
             103,
@@ -765,7 +765,7 @@
         "icon": "/lol-game-data/assets/assets/challenges/config/303408/tokens/challenger.png"
     },
     {
-        "name": "fighter",
+        "name": "鬥士",
         "description": "以 5 人組隊，使用 5 名同一職業（刺客、法師、射手、坦克、輔助或鬥士）的英雄贏得多場對戰",
         "idList": [
             266,
@@ -841,7 +841,7 @@
         "icon": "/lol-game-data/assets/assets/challenges/config/303408/tokens/challenger.png"
     },
     {
-        "name": "tank",
+        "name": "坦克",
         "description": "以 5 人組隊，使用 5 名同一職業（刺客、法師、射手、坦克、輔助或鬥士）的英雄贏得多場對戰",
         "idList": [
             266,
@@ -893,7 +893,7 @@
         "icon": "/lol-game-data/assets/assets/challenges/config/303408/tokens/challenger.png"
     },
     {
-        "name": "assassin",
+        "name": "刺客",
         "description": "以 5 人組隊，使用 5 名同一職業（刺客、法師、射手、坦克、輔助或鬥士）的英雄贏得多場對戰",
         "idList": [
             103,
@@ -941,7 +941,7 @@
         "icon": "/lol-game-data/assets/assets/challenges/config/303408/tokens/challenger.png"
     },
     {
-        "name": "support",
+        "name": "輔助",
         "description": "以 5 人組隊，使用 5 名同一職業（刺客、法師、射手、坦克、輔助或鬥士）的英雄贏得多場對戰",
         "idList": [
             12,
@@ -984,7 +984,7 @@
         "icon": "/lol-game-data/assets/assets/challenges/config/303408/tokens/challenger.png"
     },
     {
-        "name": "marksman",
+        "name": "射手",
         "description": "以 5 人組隊，使用 5 名同一職業（刺客、法師、射手、坦克、輔助或鬥士）的英雄贏得多場對戰",
         "idList": [
             166,
