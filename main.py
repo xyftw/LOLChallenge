@@ -5,7 +5,7 @@ from pywebio.output import *
 import json
 from functools import partial
 
-PORT = 1216
+PORT = 8080
 
 def printJSON(data):
 	print(json.dumps(data, ensure_ascii=False, indent=4))
@@ -52,4 +52,4 @@ def main():
 	put_scope('display')
 
 if __name__ == '__main__':
-	start_server(main, port=PORT)
+	start_server(main)
