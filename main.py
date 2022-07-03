@@ -8,8 +8,8 @@ from functools import partial
 
 PORT = 8080
 
-config(title="LOL Team Challenge Helper")
-#set_env(title="LOL Team Challenge List")
+config(title="LOL Team Challenge Helper", theme='sketchy')
+
 def printJSON(data):
 	print(json.dumps(data, ensure_ascii=False, indent=4))
 
@@ -124,4 +124,5 @@ if __name__ == '__main__':
 		# Since some cloud server may close idle connections (such as heroku),
 		# use `websocket_ping_interval` to  keep the connection alive
 		start_ws_server(main, port=args.port, websocket_ping_interval=30)
+	session.set_env(output_animation=False)
 	#start_server(main)
