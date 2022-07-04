@@ -60,6 +60,9 @@ def main():
 						avaiSet = avaiSet & set(chalList[select]['idList'])
 			champList = sorted(list(champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 			champListZH = [ champDict[champ][0] for champ in champList ]
+			if avaiSet != -1:
+				avaiChampList = sorted(list(avaiSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
+				avaiChampListZH = [ champDict[champ][0] for champ in avaiChampList ]
 			#put_text(f"{','.join(champListZH)}", scope="display")
 
 		
@@ -68,10 +71,15 @@ def main():
 				imageUrl = chalList[select]['icon'].replace("/lol-game-data/assets", "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default")
 				put_image(imageUrl, scope='display', width= ("20%" if isMobile else "10%") )
 			put_markdown(f"## 目前選擇：{'、'.join([chalList[i]['name'] for i in selectList])}", scope='display')
-			put_markdown(f"### 完全符合的可用英雄({len(champListZH)})：`{','.join(champListZH)}`", scope='display')
+			put_markdown(f"### 完全符合「所有條件」的英雄({len(champListZH)})：`{','.join(champListZH)}`", scope='display')
 			for champId in champList:
 				put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
-		
+			if avaiSet != -1 and (champSet & avaiSet):
+				put_markdown(f"### 符合「必選條件」的英雄({len(avaiChampListZH)})：`{','.join(avaiChampListZH)}`", scope='display')
+				for champId in avaiChampList:
+					put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
+
+
 		if len(selectList) > 1:
 			countDict = {key: [] for key in champDict.keys()}
 			selectCnt = 0
@@ -93,7 +101,7 @@ def main():
 				tmpList = sorted(list(availDict[availCnt]), key= lambda x: (champDict[x][1], x)) # 照英文排序
 				tmpListZH = [ champDict[champ][0] for champ in tmpList ]
 				if len(tmpList):
-					put_markdown(f"### 以下{len(tmpList)}個英雄符合{selectCnt}個可選條件中的{availCnt}個條件，推薦使用：`{','.join(tmpListZH)}`", scope='display')
+					put_markdown(f"### 以下{len(tmpList)}個英雄符合{selectCnt}個「可選條件」中的{availCnt}個條件，推薦使用：`{','.join(tmpListZH)}`", scope='display')
 					for champId in tmpList:
 						put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
 
