@@ -67,16 +67,16 @@ def main():
 				imageUrl = chalList[select]['icon'].replace("/lol-game-data/assets", "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default")
 				put_image(imageUrl, scope='display', width= ("20%" if isMobile else "10%") )
 			put_markdown(f"## 目前選擇：{'、'.join([chalList[i]['name'] for i in selectList])}", scope='display')
-			put_markdown(f"### 符合「所有條件」的英雄({len(champListZH)})：`{','.join(champListZH)}`", scope='display')
-			put_collapse('英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
-				for champId in champList ] , open=True, scope="display")
+			put_markdown(f"## 符合「所有條件」的英雄({len(champListZH)})：`{','.join(champListZH)}`", scope='display')
+			put_collapse('顯示/隱藏英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display',
+				 width= ("18%" if isMobile else "13.5%")) for champId in champList ] , open=True, scope="display")
 
 			if avaiSet != -1 and (avaiSet - champSet):
 				diffChampList = sorted(list(avaiSet - champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 				diffChampListZH = [ champDict[champ][0] for champ in diffChampList ]
-				put_markdown(f"### 符合「必選條件」，但不符合所有條件的英雄({len(diffChampListZH)})：`{','.join(diffChampListZH)}`", scope='display')
-				put_collapse('英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
-					for champId in diffChampList ] , open=False, scope="display")
+				put_markdown(f"## 符合「必選條件」，但不符合所有條件的英雄({len(diffChampListZH)})：`{','.join(diffChampListZH)}`", scope='display')
+				put_collapse('顯示/隱藏英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display',
+				 width= ("18%" if isMobile else "13.5%")) for champId in diffChampList ] , open=True, scope="display")
 				
 		if len(selectList) > 1:
 			countDict = {key: [] for key in champDict.keys()}
@@ -87,6 +87,8 @@ def main():
 					tmpList = sorted(list(tmpSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 					tmpListZH = [ champDict[champ][0] for champ in tmpList ]
 					put_markdown(f"### `{chalList[select]['name']}` 需要從以下{len(tmpListZH)}英雄中選擇至少3個英雄：`{','.join(tmpListZH)}`", scope='display')
+					put_collapse('顯示/隱藏英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display',
+				 	 width= ("18%" if isMobile else "13.5%")) for champId in tmpList ] , open=False, scope="display")
 					for champId in tmpList:
 						countDict[champId].append(chalList[select]['name'])
 						#put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
@@ -100,8 +102,8 @@ def main():
 				tmpListZH = [ champDict[champ][0] for champ in tmpList ]
 				if len(tmpList):
 					put_markdown(f"### 以下{len(tmpList)}個英雄符合{selectCnt}個「可選條件」中的{availCnt}個條件，推薦使用：`{','.join(tmpListZH)}`", scope='display')
-					put_collapse('英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
-						for champId in tmpList ] , open=True, scope="display")
+					put_collapse('顯示/隱藏英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display',
+					 width= ("18%" if isMobile else "13.5%")) for champId in tmpList ] , open=True, scope="display")
 
 	putList = []
 	for i in range(len(chalList)):
