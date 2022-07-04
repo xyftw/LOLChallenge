@@ -68,16 +68,16 @@ def main():
 				put_image(imageUrl, scope='display', width= ("20%" if isMobile else "10%") )
 			put_markdown(f"## 目前選擇：{'、'.join([chalList[i]['name'] for i in selectList])}", scope='display')
 			put_markdown(f"### 符合「所有條件」的英雄({len(champListZH)})：`{','.join(champListZH)}`", scope='display')
-			for champId in champList:
-				put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
+			put_collapse('英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
+				for champId in champList ] , open=True, scope="display")
+
 			if avaiSet != -1 and (avaiSet - champSet):
 				diffChampList = sorted(list(avaiSet - champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 				diffChampListZH = [ champDict[champ][0] for champ in diffChampList ]
 				put_markdown(f"### 符合「必選條件」，但不符合所有條件的英雄({len(diffChampListZH)})：`{','.join(diffChampListZH)}`", scope='display')
-				for champId in diffChampList:
-					put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
-
-
+				put_collapse('英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
+					for champId in diffChampList ] , open=False, scope="display")
+				
 		if len(selectList) > 1:
 			countDict = {key: [] for key in champDict.keys()}
 			selectCnt = 0
@@ -100,9 +100,8 @@ def main():
 				tmpListZH = [ champDict[champ][0] for champ in tmpList ]
 				if len(tmpList):
 					put_markdown(f"### 以下{len(tmpList)}個英雄符合{selectCnt}個「可選條件」中的{availCnt}個條件，推薦使用：`{','.join(tmpListZH)}`", scope='display')
-					for champId in tmpList:
-						put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
-
+					put_collapse('英雄圖示', [put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
+						for champId in tmpList ] , open=True, scope="display")
 
 	putList = []
 	for i in range(len(chalList)):
