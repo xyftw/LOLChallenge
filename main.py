@@ -60,23 +60,21 @@ def main():
 						avaiSet = avaiSet & set(chalList[select]['idList'])
 			champList = sorted(list(champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
 			champListZH = [ champDict[champ][0] for champ in champList ]
-			if avaiSet != -1:
-				avaiChampList = sorted(list(avaiSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
-				avaiChampListZH = [ champDict[champ][0] for champ in avaiChampList ]
 			#put_text(f"{','.join(champListZH)}", scope="display")
-
 		
 		if selectList:
 			for select in selectList:
 				imageUrl = chalList[select]['icon'].replace("/lol-game-data/assets", "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default")
 				put_image(imageUrl, scope='display', width= ("20%" if isMobile else "10%") )
 			put_markdown(f"## 目前選擇：{'、'.join([chalList[i]['name'] for i in selectList])}", scope='display')
-			put_markdown(f"### 完全符合「所有條件」的英雄({len(champListZH)})：`{','.join(champListZH)}`", scope='display')
+			put_markdown(f"### 符合「所有條件」的英雄({len(champListZH)})：`{','.join(champListZH)}`", scope='display')
 			for champId in champList:
 				put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
-			if avaiSet != -1 and (champSet & avaiSet):
-				put_markdown(f"### 符合「必選條件」的英雄({len(avaiChampListZH)})：`{','.join(avaiChampListZH)}`", scope='display')
-				for champId in avaiChampList:
+			if avaiSet != -1 and (avaiSet - champSet):
+				diffChampList = sorted(list(avaiSet - champSet), key= lambda x: (champDict[x][1], x)) # 照英文排序
+				diffChampListZH = [ champDict[champ][0] for champ in diffChampList ]
+				put_markdown(f"### 符合「必選條件」，但不符合所有條件的英雄({len(diffChampListZH)})：`{','.join(diffChampListZH)}`", scope='display')
+				for champId in diffChampList:
 					put_image(f"https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/{champId}.png", scope='display')
 
 
