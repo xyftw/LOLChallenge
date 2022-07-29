@@ -58,8 +58,6 @@ def getChallenges(auth):
 			#if chal['availableIds'] or chal['name'] == "同業俱樂部":
 			if chal['availableIds']:
 				chalList += [ {key: value for key, value in chal.items() if key in targetList} ]
-			#if chal['name'] == "同業俱樂部":
-			#	printJSON(chal)
 	return chalList
 
 def output2CSV():
