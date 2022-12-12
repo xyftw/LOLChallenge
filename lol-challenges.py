@@ -33,18 +33,28 @@ def getParser():
 def getChampDict(auth):
 	# /lol-game-data/assets/v1/champion-icons/1.png
 	# https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/1.png
-	url = auth + "/lol-champions/v1/owned-champions-minimal"
+	url = auth + "/lol-summoner/v1/current-summoner" #url = auth + "/lol-login/v1/session"
 	res = requests.get(url, verify=False).json()
+	summonerId = res["summonerId"]
 
-	
+	url = f"{auth}/lol-champions/v1/inventories/{summonerId}/champions"
+	res = requests.get(url, verify=False).json()[1:]
+
+	'''url = auth + "/lol-champions/v1/owned-champions-minimal"
+	res = requests.get(url, verify=False).json()'''
 	champDict = { int(champ['id']): [ champ['name'], champ['alias'] ] for champ in res }
-	champDict[895] = ["淣菈" , "Nilah"]
+
+	#champDict[895] = ["淣菈" , "Nilah"]
 	with open("champ.json", "w", encoding='utf-8') as f:
 		json.dump(champDict, f, indent=4, ensure_ascii=False)
 	roleDict = {'mage':[], 'fighter':[], 'tank':[], 'assassin':[], 'support':[], 'marksman':[]}
 	for champ in res:
 		for role in champ['roles']:
 			roleDict[role].append(int(champ['id']))
+	roleMap = {'mage':'法師', 'fighter':'鬥士', 'tank':'坦克', 'assassin':'刺客', 'support':'輔助', 'marksman':'射手'}
+	for role in roleMap:
+		roleDict[roleMap[role]] = roleDict[role]
+		del roleDict[role]
 	return champDict, roleDict
 def getChallenges(auth):
 	# /lol-game-data/assets/assets/challenges/config/303401/tokens/challenger.png
@@ -87,9 +97,6 @@ def main():
 	champDict, roleDict = getChampDict(auth)
 	chalList = getChallenges(auth)
 	output2CSV()
-
-
-
 
 if __name__ == '__main__':
 	main()
